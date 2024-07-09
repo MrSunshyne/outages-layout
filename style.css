@@ -1,0 +1,7 @@
+body {
+    /* hsl hue saturation lightness */
+
+    --hue: 100;
+    background: linear-gradient(90deg, hsl(var(--hue), 100%, 21%), hsl(var(--hue), 100%, 50%));
+}
+
