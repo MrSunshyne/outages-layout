@@ -35,7 +35,14 @@ h2 {
     padding: 20px;
     border-radius: 10px;
     --status-color: red;
+    transition: all 0.8s linear;
 }
+
+.card:hover {
+    cursor: pointer;
+    background: black;
+}
+
 .card .description{
     display:grid;
     gap: 8px;
@@ -84,4 +91,35 @@ h2 {
 
 .status {
     animation: glow 3s infinite ease-in-out alternate;
+}
+
+/* 
+    Media Queries 
+    
+*/
+
+@media screen and (width < 1000px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .card {
+        display:block;
+        position: relative;
+    }
+
+    .status {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+    }
+}
+
+.large-curve {
+    fill: hsl(var(--hue), 100%, 10%); ;
+}
+.small-curve {
+    fill: hsl(var(--hue), 100%, 50%); ;
 }
