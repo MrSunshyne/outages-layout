@@ -1,42 +1,73 @@
-// Write a function to add two numbers
+function isTherePower(from, to) {
+    let now = new Date()
+    let f = new Date(from)
+    let t = new Date(to)
 
-function addition(a, b) {
-    return a + b
-}
-// let sum = addition(23, 17)
-// console.log(sum)
-
-// write a function to multiply two numbers
-function multiply(a, b) {
-    return a * b
+    // if power return true
+    if (now > t) return true
+    if (now < f) return true
+    return false
 }
 
-// multiplty(60, 33)
+function renderToPage(locality, street, from, to) {
+    
+    let formattedFrom = (new Date(from)).toLocaleTimeString()
+    let formattedTo = (new Date(to)).toLocaleTimeString()
 
-// write a function that takes two numbers, 
-///adds them, and multiplies the result by the 2nd number
+    let isNotDark = isTherePower(from, to)
 
-function complicatedOperation(number_1, number_2) {
-    let sum = addition(number_1, number_2)
-    let result = multiply(sum, number_2)
-    return result
+    let color
+    if (isNotDark) {
+        color = 'rgb(0,255,0)'
+    } else {
+        color = 'rgb(255,0,0)'
+    }
+
+    let target = document.getElementById('display');
+
+    target.innerHTML += `
+            <div class="card" style="--status-color: ${color};">
+                <div class="description">
+                    <div class="time">
+                        <span>FROM ${formattedFrom} TO ${formattedTo}</span>
+                    </div>
+                    <div class="locality">
+                        ${locality}
+                    </div>
+                    <div class="street">
+                        ${street}
+                    </div>
+                </div>
+                <div class="timer">
+                    <div class="time-label">
+                        Power will resume in
+                    </div>
+                    <div class="timer-countdown">
+                        2h 26m 47s
+                    </div>
+                </div>
+                <div class="illustration">
+                    <div class="status"></div>
+                </div>
+            </div>
+    `
 }
 
-// const value = complicatedOperation(5, 8)
-// console.log(value)
 
+function fetchData() {
+    let ENDPOINT = 'https://raw.githubusercontent.com/MrSunshyne/mauritius-dataset-electricity/main/data/power-outages.latest.json'
 
-function addElements() {
-    let number1 = document.getElementById('number1')
-    let number2 = document.getElementById('number2')
-    let display = document.getElementById('display')
+    fetch(ENDPOINT)
+        .then((response) => response.json())
+        .then((data) => {
+            let today = data.today
 
-    let number1Value = parseInt(number1.innerHTML)
-    let number2Value = parseInt(number2.innerHTML)
+            for (let x = 0; x < today.length ; x++) {
+                let row = today[x]
+                renderToPage(row.locality, row.streets, row.from, row.to)
+            }
 
-    let result = addition(number1Value, number2Value)
-    display.innerHTML = result    
-    // console.log the sum of number1 and number2
+        })
 }
 
-addElements()
+fetchData()
